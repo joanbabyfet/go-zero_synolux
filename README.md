@@ -18,7 +18,7 @@ go run feedback.go
 ```
 
 ## Requires
-go v1.21.0
+go v1.21.0  
 goctl v1.6.5
 
 ## Maintainers
