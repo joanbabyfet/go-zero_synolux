@@ -1,0 +1,12 @@
+Name: feedback-api
+Host: 0.0.0.0
+Port: 8888
+
+DB:
+  DataSource: dbuser:admin888@tcp(127.0.0.1:3306)/go_micro?charset=utf8mb4&parseTime=True&loc=Local
+Log:
+  ServiceName: feedback-api
+  Level: debug
+  #Mode: file
+  Path: logs
+MaxConns: 300 # 限制300并发，默认是10000

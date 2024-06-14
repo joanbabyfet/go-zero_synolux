@@ -1,0 +1,94 @@
+syntax = "v1"
+
+type RegisterRequest {
+	Username  string `form:"username"`
+	Password  string `form:"password"`
+	Realname  string `form:"realname"`
+	Email     string `form:"email"`
+	PhoneCode string `form:"phone_code"`
+	Phone     string `form:"phone"`
+}
+
+type ProfileRequest {
+	Realname  string `form:"realname"`
+	Email     string `form:"email"`
+	PhoneCode string `form:"phone_code"`
+	Phone     string `form:"phone"`
+}
+
+type SetPasswordRequest {
+	Password    string `form:"password"`
+	NewPassword string `form:"new_password"`
+	RePassword  string `form:"re_password"`
+}
+
+type LoginRequest {
+	Username string `form:"username"`
+	Password string `form:"password"`
+	Code     string `form:"code"`
+	Key      string `form:"key"`
+}
+
+type LoginResponse {
+	Id        string `json:"id"`
+	Username  string `json:"username"`
+	Realname  string `json:"realname"`
+	Email     string `json:"email"`
+	PhoneCode string `json:"phone_code"`
+	Phone     string `json:"phone"`
+	Avatar    string `json:"avatar"`
+	Language  string `json:"language"`
+	Token     string `json:"token"`
+}
+
+type CommonResponse {
+	Code      int         `json:"code"`
+	Msg       string      `json:"msg"`
+	Timestamp int         `json:"timestamp"`
+	Data      interface{} `json:"data"`
+}
+
+type UserInfo {
+	Id        string `json:"id"`
+	Username  string `json:"username"`
+	Realname  string `json:"realname"`
+	Email     string `json:"email"`
+	PhoneCode string `json:"phone_code"`
+	Phone     string `json:"phone"`
+	Avatar    string `json:"avatar"`
+	Language  string `json:"language"`
+}
+
+type UserInfoResponse {
+	Code      int      `json:"code"`
+	Msg       string   `json:"msg"`
+	Timestamp int      `json:"timestamp"`
+	Data      UserInfo `json:"data"`
+}
+
+@server (
+	//前缀
+	prefix: /api/v1
+	//开启jwt验证
+	jwt: Auth
+)
+service user-api {
+	@handler CreateUser
+	post /register (RegisterRequest) returns (CommonResponse)
+
+	@handler UpdateUser
+	post /profile (ProfileRequest) returns (CommonResponse)
+
+	@handler SetPassword
+	post /set_password (SetPasswordRequest) returns (CommonResponse)
+
+	@handler UserInfo
+	get /get_userinfo returns (UserInfoResponse)
+
+	@handler Login
+	post /login (LoginRequest) returns (LoginResponse)
+
+	@handler Logout
+	post /logout returns (CommonResponse)
+}
+

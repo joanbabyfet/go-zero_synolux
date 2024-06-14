@@ -1,0 +1,80 @@
+syntax = "v1"
+
+type IdRequest {
+	Id int64 `form:"id"`
+}
+
+type SearchRequest {
+	Title    string `form:"title,optional"`
+	Page     int    `form:"page,default=1"`
+	PageSize int    `form:"page_size,default=10"`
+	Limit    int    `form:"limit,default=5000"`
+}
+
+type SaveRequest {
+	Id      int64  `form:"id,optional"`
+	Catid   int64  `form:"catid,optional"`
+	Title   string `form:"title"`
+	Info    string `form:"info,optional"`
+	Content string `form:"content,optional"`
+	Author  string `form:"author,optional"`
+	Status  int64  `form:"status,optional"`
+}
+
+type ArticleInfo {
+	Id      int64  `json:"id"`
+	Catid   int64  `json:"catid"`
+	Title   string `json:"title"`
+	Info    string `json:"info"`
+	Content string `json:"content"`
+	Author  string `json:"author"`
+	Status  int64  `json:"status"`
+}
+
+type CommonResponse {
+	Code      int         `json:"code"`
+	Msg       string      `json:"msg"`
+	Timestamp int         `json:"timestamp"`
+	Data      interface{} `json:"data"`
+}
+
+type ArticleInfoResponse {
+	Code      int         `json:"code"`
+	Msg       string      `json:"msg"`
+	Timestamp int         `json:"timestamp"`
+	Data      ArticleInfo `json:"data"`
+}
+
+type ListResponse {
+	Code      int           `json:"code"`
+	Msg       string        `json:"msg"`
+	Timestamp int           `json:"timestamp"`
+	Data      []ArticleInfo `json:"data"`
+}
+
+@server (
+	prefix: /api/v1
+)
+service article-api {
+	@handler SaveArticle
+	post /article/save (SaveRequest) returns (CommonResponse)
+
+	@handler DeleteArticle
+	post /article/delete (IdRequest) returns (CommonResponse)
+
+	@handler EnableArticle
+	post /article/enable (IdRequest) returns (CommonResponse)
+
+	@handler DisableArticle
+	post /article/disable (IdRequest) returns (CommonResponse)
+
+	@handler ArticleInfo
+	get /article/detail (IdRequest) returns (ArticleInfoResponse)
+
+	@handler ArticleList
+	get /article (SearchRequest) returns (ListResponse)
+
+	@handler HomeArticle
+	get /home_article (SearchRequest) returns (ListResponse)
+}
+
