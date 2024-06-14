@@ -69,13 +69,22 @@ type UserInfoResponse {
 @server (
 	//前缀
 	prefix: /api/v1
-	//开启jwt验证
-	jwt: Auth
 )
 service user-api {
 	@handler CreateUser
 	post /register (RegisterRequest) returns (CommonResponse)
 
+	@handler Login
+	post /login (LoginRequest) returns (LoginResponse)
+}
+
+@server (
+	//前缀
+	prefix: /api/v1
+	//开启jwt验证
+	jwt: Auth
+)
+service user-api {
 	@handler UpdateUser
 	post /profile (ProfileRequest) returns (CommonResponse)
 
@@ -84,9 +93,6 @@ service user-api {
 
 	@handler UserInfo
 	get /get_userinfo returns (UserInfoResponse)
-
-	@handler Login
-	post /login (LoginRequest) returns (LoginResponse)
 
 	@handler Logout
 	post /logout returns (CommonResponse)
