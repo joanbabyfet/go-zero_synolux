@@ -29,19 +29,25 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 func (l *LoginLogic) Login(req *types.LoginRequest) (*types.LoginResponse, int, error) {
 	stat := 1
 	auth := l.svcCtx.Config.Auth
+
+	//检测验证码
+	if !utils.Store.Verify(req.Key, req.Code, true) {
+		return nil, -2, errors.New("验证码错误")
+	}
+
 	//获取用户详情
 	data, err := l.svcCtx.UserModel.FindByUsername(l.ctx, req.Username)
 	if err != nil {
-		return nil, -2, errors.New("用户名或密码无效")
+		return nil, -3, errors.New("用户名或密码无效")
 	}
 	if !utils.PasswordVerify(strings.Trim(req.Password, " "), data.Password) {
-		return nil, -3, errors.New("用户名或密码无效")
+		return nil, -4, errors.New("用户名或密码无效")
 	}
 	data.LoginIp = l.svcCtx.ClientIP //登录ip
 	data.LoginTime = int64(utils.Timestamp())
 	err = l.svcCtx.UserModel.Update(l.ctx, data)
 	if err != nil {
-		return nil, -4, errors.New("登录异常")
+		return nil, -5, errors.New("登录异常")
 	}
 
 	// 生成token
@@ -50,7 +56,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (*types.LoginResponse, int, 
 		Username: data.Username,
 	}, auth.AccessSecret, auth.AccessExpire)
 	if err != nil {
-		return nil, -5, errors.New("生成token失败")
+		return nil, -6, errors.New("生成token失败")
 	}
 	//测试解析token
 	// parse_token, _ := utils.ParseToken(token, auth.AccessSecret)

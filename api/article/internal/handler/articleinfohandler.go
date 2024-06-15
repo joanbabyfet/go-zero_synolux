@@ -24,7 +24,7 @@ func ArticleInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		if stat < 0 {
 			utils.ErrorJson(w, stat, err.Error())
 		} else {
-			utils.SuccessJson(w, resp)
+			utils.SuccessJson(w, "", resp)
 		}
 	}
 }

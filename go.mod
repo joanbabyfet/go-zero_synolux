@@ -4,7 +4,11 @@ go 1.21.0
 
 require github.com/zeromicro/go-zero v1.6.5
 
-require github.com/jinzhu/copier v0.4.0 // indirect
+require (
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
+	github.com/jinzhu/copier v0.4.0 // indirect
+	golang.org/x/image v0.13.0 // indirect
+)
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
@@ -21,6 +25,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
+	github.com/mojocn/base64Captcha v1.3.6
 	github.com/openzipkin/zipkin-go v0.4.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/prometheus/client_golang v1.18.0 // indirect

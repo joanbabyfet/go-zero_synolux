@@ -10,9 +10,13 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/mojocn/base64Captcha"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"golang.org/x/crypto/bcrypt"
 )
+
+// 验证码存放
+var Store = base64Captcha.DefaultMemStore
 
 type Body struct {
 	Code      int         `json:"code"`
@@ -34,8 +38,11 @@ func Response(w http.ResponseWriter, code int, msg string, data interface{}) {
 	httpx.OkJson(w, body)
 }
 
-func SuccessJson(w http.ResponseWriter, data interface{}) {
-	Response(w, 0, "success", data)
+func SuccessJson(w http.ResponseWriter, msg string, data interface{}) {
+	if msg == "" {
+		msg = "success"
+	}
+	Response(w, 0, msg, data)
 }
 
 func ErrorJson(w http.ResponseWriter, code int, msg string) {
@@ -120,4 +127,12 @@ func DisplayImg(file_url string, filename string) string {
 		return ""
 	}
 	return file_url + "/image/" + filename
+}
+
+// 获取图片验证码
+func GetCaptcha() (string, string, string, error) {
+	driver := base64Captcha.DefaultDriverDigit
+	captcha := base64Captcha.NewCaptcha(driver, Store)
+	id, b64s, answer, err := captcha.Generate()
+	return id, b64s, answer, err
 }
