@@ -31,9 +31,9 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (*types.LoginResponse, int, 
 	auth := l.svcCtx.Config.Auth
 
 	//检测验证码
-	if !utils.Store.Verify(req.Key, req.Code, true) {
-		return nil, -2, errors.New("验证码错误")
-	}
+	// if !utils.Store.Verify(req.Key, req.Code, true) {
+	// 	return nil, -2, errors.New("验证码错误")
+	// }
 
 	//获取用户详情
 	data, err := l.svcCtx.UserModel.FindByUsername(l.ctx, req.Username)
@@ -61,6 +61,9 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (*types.LoginResponse, int, 
 	//测试解析token
 	// parse_token, _ := utils.ParseToken(token, auth.AccessSecret)
 	// fmt.Println(parse_token)
+
+	// 写入redis
+	//err = l.svcCtx.RedisClient.Set(data.Id, data.Realname)
 
 	//组装返回数据
 	info := &types.LoginResponse{

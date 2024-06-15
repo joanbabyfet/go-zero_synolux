@@ -4,6 +4,10 @@ Port: 8888
 
 DB:
   DataSource: dbuser:admin888@tcp(127.0.0.1:3306)/go_micro?charset=utf8mb4&parseTime=True&loc=Local
+# 不支持db选择, 默认使用db0, 因redis cluster 默认也仅支持db0
+Redis:
+  Host: "127.0.0.1:6379"
+  Pass: ""
 Log:
   ServiceName: user-api
   Level: debug
