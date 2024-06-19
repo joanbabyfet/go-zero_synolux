@@ -20,5 +20,8 @@ service common-api {
 
 	@handler Captcha
 	get /captcha returns (CommonResponse)
+
+	@handler Upload
+	post /upload returns (CommonResponse)
 }
 

@@ -1,3 +1,7 @@
 Name: common-api
 Host: 0.0.0.0
 Port: 8881
+
+FileUrl: https://tststatic.synolux.local
+UploadMaxSize: 5
+UploadDir: uploads
